@@ -1,0 +1,450 @@
+/* =========================================================
+   FRUIT QUIZ - style.css (全とっかえ版)
+   - 010_start（背景1枚絵 + クリック用ボタン重ね）
+   - 020_quiz / 030_hantei / 040_knowledge / 050_result も使える土台
+   ※ style.css は /css にある前提
+   ========================================================= */
+
+/* ========== Reset / Base ========== */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body{
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  color: #222;
+  background: #f7f2ea;
+}
+
+img{ max-width: 100%; display: block; }
+button{ font-family: inherit; }
+
+/* 画面全体（JSが<section class="screen ...">を描く前提） */
+.screen{
+  min-height: 100vh;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  padding: 18px 14px;
+}
+
+/* 中央に寄せたい時の汎用 */
+.center{
+  width: min(520px, 100%);
+  margin-inline: auto;
+}
+
+/* ========== Paper / Background (共通の“紙”感) ========== */
+.paper-bg{
+  background-color: #f7f2ea;
+  /* ほんのり紙っぽい粒感 */
+  background-image:
+    radial-gradient(rgba(0,0,0,.03) 1px, transparent 1px),
+    radial-gradient(rgba(0,0,0,.02) 1px, transparent 1px);
+  background-size: 18px 18px, 22px 22px;
+  background-position: 0 0, 7px 11px;
+}
+
+.paper-card{
+  width: min(520px, 100%);
+  border-radius: 18px;
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 14px 28px rgba(0,0,0,.16);
+  border: 1px solid rgba(0,0,0,.06);
+  overflow: hidden;
+}
+
+/* セクション余白 */
+.pad{
+  padding: 18px 16px;
+}
+
+/* 仕切り線（モックの薄い横線） */
+.hr{
+  height: 1px;
+  background: rgba(0,0,0,.15);
+  margin: 12px 0 16px;
+}
+
+/* ========== Buttons (共通) ========== */
+.btn{
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 14px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  padding: 14px 16px;
+  width: 100%;
+}
+
+.btn:active{ transform: translateY(1px); }
+
+.btn-green{
+  color: #fff;
+  text-shadow: 0 2px 0 rgba(0,0,0,.18);
+  background: linear-gradient(180deg, #8bd74b, #2f8f23);
+  box-shadow:
+    0 10px 0 rgba(0,0,0,.12),
+    0 18px 28px rgba(0,0,0,.18);
+}
+
+.btn-green:active{
+  box-shadow:
+    0 8px 0 rgba(0,0,0,.12),
+    0 14px 22px rgba(0,0,0,.16);
+}
+
+.btn-blue{
+  color: #fff;
+  background: linear-gradient(180deg, #4b90ff, #2d63c9);
+  box-shadow: 0 10px 0 rgba(0,0,0,.10), 0 16px 22px rgba(0,0,0,.14);
+}
+
+.btn-yellow{
+  color: #2a2a2a;
+  background: linear-gradient(180deg, #ffd559, #f2b700);
+  box-shadow: 0 10px 0 rgba(0,0,0,.10), 0 16px 22px rgba(0,0,0,.14);
+}
+
+.btn-pill{
+  border-radius: 999px;
+  padding: 16px 18px;
+  font-size: 22px;
+}
+
+/* 小ボタン（結果画面の「もういちど」「おわる」など） */
+.btn-small{
+  width: auto;
+  min-width: 160px;
+  padding: 14px 18px;
+  border-radius: 999px;
+  font-size: 20px;
+}
+
+/* ========== 010_start (モック：背景画像1枚絵) ========== */
+.bg-start{
+  position: relative;
+  background-image: url("../images/010_start.png");
+  background-repeat: no-repeat;
+  background-position: center 45%;
+  background-size: contain;
+  background-color: #f7f2ea;
+  overflow: hidden; /* ← ぼかし用に必須 */
+}
+
+/* 余白を埋める「ぼかし背景レイヤー」 */
+.bg-start::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("../images/010_start.png");
+  background-repeat: no-repeat;
+  background-position: center 45%;
+  background-size: cover;      /* 余白を埋める */
+  filter: blur(16px) saturate(1.1);
+  transform: scale(1.08);      /* ブラー切れ防止 */
+  opacity: 0.35;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.start-mock{
+  position: relative;
+  overflow: hidden;
+}
+
+/* クリックできる透明ボタン（モックの緑ボタン位置に重ねる） */
+.start-btn{
+  position: absolute;
+  left: 50%;
+  top: 54%; /* ← ここだけ微調整してモック完全一致 */
+  transform: translate(-50%, -50%);
+
+  width: clamp(200px, 66vw, 320px);
+  height: clamp(56px, 10vw, 72px);
+
+  border: none;
+  border-radius: 999px;
+
+  font-weight: 900;
+  font-size: clamp(20px, 5.2vw, 28px);
+  letter-spacing: .06em;
+
+  color: #fff;
+  text-shadow: 0 2px 0 rgba(0,0,0,.18);
+
+  background: linear-gradient(180deg, #8bd74b, #2f8f23);
+  box-shadow:
+    0 10px 0 rgba(0,0,0,.12),
+    0 18px 28px rgba(0,0,0,.18);
+
+  cursor: pointer;
+
+  z-index: 1;
+  
+}
+
+.start-btn:active{
+  transform: translate(-50%, calc(-50% + 2px));
+  box-shadow:
+    0 8px 0 rgba(0,0,0,.12),
+    0 14px 22px rgba(0,0,0,.16);
+}
+
+/* ========== 020_quiz (問題画面) ========== */
+.quiz-wrap{
+  width: min(520px, 100%);
+}
+
+.quiz-title-kanji{
+  text-align: center;
+  font-weight: 900;
+  font-size: 64px;
+  letter-spacing: .06em;
+  margin: 6px 0 10px;
+}
+
+.quiz-yomi{
+  text-align: center;
+  font-weight: 800;
+  font-size: 22px;
+  margin: -2px 0 6px;
+  opacity: .9;
+}
+
+.choice-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 14px;
+  padding: 14px 16px 0;
+}
+
+.choice-btn{
+  border: 1px solid rgba(0,0,0,.20);
+  background: rgba(255,255,255,.70);
+  border-radius: 10px;
+  padding: 14px 12px;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  box-shadow: 0 6px 10px rgba(0,0,0,.10);
+  cursor: pointer;
+}
+
+.choice-btn:active{ transform: translateY(1px); }
+
+.choice-btn.is-selected{
+  outline: 3px solid rgba(47,143,35,.35);
+  border-color: rgba(47,143,35,.55);
+}
+
+.quiz-bottom{
+  padding: 16px;
+}
+
+.ok-btn{
+  width: 100%;
+}
+.ok-btn.btn{ border-radius: 999px; }
+
+/* ========== 030_hantei (正解/おしい) ========== */
+.judge-banner{
+  margin: 0 auto;
+  width: min(420px, 100%);
+  border-radius: 6px;
+  padding: 16px 14px;
+  text-align: center;
+  font-weight: 900;
+  font-size: 34px;
+  box-shadow: 0 10px 18px rgba(0,0,0,.14);
+  border: 1px solid rgba(0,0,0,.10);
+}
+
+.judge-banner.is-correct{
+  color: #fff;
+  background: linear-gradient(180deg, #58a8ff, #2a6bd6);
+  text-shadow: 0 2px 0 rgba(0,0,0,.18);
+}
+
+.judge-banner.is-close{
+  color: #2a2a2a;
+  background: linear-gradient(180deg, #ffd559, #f2b700);
+}
+
+.answer-line{
+  text-align: center;
+  margin: 18px 0 0;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.judge-actions{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 18px 16px;
+  align-items: center;
+}
+
+.btn-gray{
+  background: rgba(255,255,255,.70);
+  border: 1px solid rgba(0,0,0,.20);
+  color: #222;
+  box-shadow: 0 6px 10px rgba(0,0,0,.10);
+}
+
+/* ========== 040_fruit_knowledge (豆知識) ========== */
+.know-head{
+  text-align: center;
+  padding: 16px 16px 0;
+}
+
+.know-kanji{
+  font-weight: 900;
+  font-size: 54px;
+  margin: 4px 0 0;
+  letter-spacing: .06em;
+}
+
+.know-yomi{
+  font-weight: 800;
+  font-size: 22px;
+  margin: 4px 0 0;
+  opacity: .9;
+}
+
+.know-image{
+  margin: 14px 16px 0;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,.12);
+  box-shadow: 0 10px 18px rgba(0,0,0,.14);
+}
+
+.know-box{
+  margin: 14px 16px 0;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,.15);
+  background: rgba(255,255,255,.70);
+  padding: 14px 14px;
+  box-shadow: 0 8px 14px rgba(0,0,0,.10);
+}
+
+.know-text{
+  font-size: 20px;
+  line-height: 1.6;
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+
+.know-meta{
+  border-top: 1px solid rgba(0,0,0,.12);
+  padding-top: 10px;
+  display: grid;
+  gap: 6px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.know-meta .label{
+  color: #2f8f23;
+}
+
+.know-next{
+  padding: 16px;
+}
+
+/* ========== 050_result (結果) ========== */
+.result-head{
+  text-align: center;
+  padding: 18px 16px 0;
+}
+
+.result-title{
+  font-weight: 900;
+  font-size: 34px;
+  margin: 0;
+}
+
+.result-score{
+  font-weight: 900;
+  font-size: 58px;
+  margin: 6px 0 0;
+  color: #2f8f23;
+}
+
+.result-msg{
+  text-align: center;
+  font-weight: 900;
+  font-size: 26px;
+  margin: 16px 0 0;
+}
+
+.result-submsg{
+  text-align: center;
+  font-weight: 800;
+  font-size: 20px;
+  margin: 6px 0 12px;
+  opacity: .9;
+}
+
+.table-wrap{
+  margin: 10px 16px 0;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,.15);
+  background: rgba(255,255,255,.70);
+}
+
+table{
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 18px;
+}
+
+th, td{
+  padding: 10px 10px;
+  border-bottom: 1px solid rgba(0,0,0,.12);
+  text-align: center;
+  font-weight: 800;
+}
+
+th{
+  background: rgba(0,0,0,.04);
+  font-weight: 900;
+}
+
+tr:last-child td{ border-bottom: none; }
+
+.pill{
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: rgba(255,255,255,.70);
+  min-width: 90px;
+}
+
+.pill.ok{
+  background: rgba(140, 220, 110, .35);
+}
+
+.pill.ng{
+  background: rgba(255, 170, 120, .35);
+}
+
+.result-actions{
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  padding: 18px 16px 20px;
+}
+
+/* ========== Small screens fine-tune ========== */
+@media (max-width: 380px){
+  .quiz-title-kanji{ font-size: 56px; }
+  .choice-btn{ font-size: 20px; padding: 12px 10px; }
+  .btn-pill{ font-size: 20px; }
+  .result-score{ font-size: 52px; }
+}
