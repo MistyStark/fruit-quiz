@@ -1,14 +1,23 @@
-// quiz_logic.js
 (() => {
   const APP_ID = "app";
 
   const state = {
-    screen: "start"
+    screen: "start", // start | quiz
+    quiz: {
+      question: "苺",
+      choices: [
+        "じろうがき", "きよみ",
+        "いちご", "あんず",
+        "すもも", "りんご",
+        "ざくろ", "とう",
+        "かき", "くわのみ"
+      ],
+      selectedIndex: null,
+      locked: false,
+    },
   };
 
-  function $(id) {
-    return document.getElementById(id);
-  }
+  const $ = (id) => document.getElementById(id);
 
   function mount(html) {
     const app = $(APP_ID);
@@ -18,36 +27,84 @@
   }
 
   function bind() {
-    const startBtn = document.querySelector("[data-action='start']");
-    if (startBtn) {
+    if (state.screen === "start") {
+      const startBtn = document.querySelector(".start-btn");
+      if (!startBtn) return;
       startBtn.addEventListener("click", () => {
-        alert("クイズ開始！🍎（次は問題画面を作るよ）");
+        state.screen = "quiz";
+        mount(render());
       });
+      return;
     }
+
+    // quiz
+    const okBtn = document.querySelector(".ok-btn");
+    const choiceBtns = document.querySelectorAll(".choice-btn");
+    if (!okBtn) return;
+
+    choiceBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (state.quiz.locked) return;
+        state.quiz.selectedIndex = Number(btn.dataset.index);
+        mount(render());
+      });
+    });
+
+    okBtn.addEventListener("click", () => {
+      if (state.quiz.locked) return;
+      if (state.quiz.selectedIndex === null) return;
+      state.quiz.locked = true;
+      mount(render());
+      console.log("ANSWER FIXED:", state.quiz.selectedIndex);
+    });
   }
 
-function renderStart() {
-  return `
-    <section class="screen bg-start start-mock" aria-label="スタート画面">
-      <button class="start-btn" data-action="start" aria-label="スタート">
-        スタート
-      </button>
-    </section>
-  `;
-}
+  function renderStart() {
+    return `
+      <section class="screen bg-start start-mock" aria-label="スタート画面">
+        <button class="start-btn" aria-label="スタート">スタート</button>
+      </section>
+    `;
+  }
 
+  function renderQuiz() {
+    const okDisabled =
+      state.quiz.selectedIndex === null || state.quiz.locked
+        ? 'disabled="disabled"'
+        : "";
+
+    return `
+      <section class="screen paper-bg" aria-label="クイズ画面">
+        <div class="paper-card quiz-wrap">
+          <div class="pad">
+            <div class="quiz-title-kanji">${state.quiz.question}</div>
+            <div class="hr"></div>
+
+            <div class="choice-grid">
+              ${state.quiz.choices.map((choice, index) => {
+                const sel = state.quiz.selectedIndex === index ? "is-selected" : "";
+                return `
+                  <button class="choice-btn ${sel}" data-index="${index}">
+                    ${choice}
+                  </button>
+                `;
+              }).join("")}
+            </div>
+
+            <div class="quiz-blank" aria-hidden="true"></div>
+
+            <div class="quiz-bottom">
+              <button class="btn btn-green btn-pill ok-btn" ${okDisabled}>OK</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
 
   function render() {
-    switch (state.screen) {
-      case "start":
-      default:
-        return renderStart();
-    }
+    return state.screen === "start" ? renderStart() : renderQuiz();
   }
 
-  function boot() {
-    mount(render());
-  }
-
-  window.addEventListener("DOMContentLoaded", boot);
+  window.addEventListener("DOMContentLoaded", () => mount(render()));
 })();

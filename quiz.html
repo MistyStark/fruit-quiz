@@ -2,45 +2,13 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>果物よみがなクイズ</title>
   <link rel="stylesheet" href="css/style.css">
-  <style>
-    body {
-      font-family: sans-serif;
-      max-width: 420px;
-      margin: auto;
-      padding: 16px;
-      text-align: center;
-    }
-    button {
-      width: 100%;
-      padding: 14px;
-      font-size: 18px;
-      margin-top: 8px;
-      border-radius: 10px;
-      border: none;
-    }
-    #okBtn:disabled {
-      opacity: 0.35;
-    }
-    .correct {
-      background: #dff5ff;
-    }
-    .incorrect {
-      background: #fff2cc;
-    }
-  </style>
 </head>
 <body>
+  <div id="app"></div>
 
-<div id="quizBox">
-  <h1 id="questionKanji"></h1>
-  <div id="hint"></div>
-  <div id="choices"></div>
-  <button id="okBtn" disabled>OK</button>
-</div>
-
-<script src="js/quiz.js"></script>
-<script src="js/quiz_logic.js"></script>
+  <script src="js/quiz_logic.js"></script>
 </body>
 </html>
