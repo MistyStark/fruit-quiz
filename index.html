@@ -1,3 +1,4 @@
+cat > index.html << 'EOF'
 <!doctype html>
 <html lang="ja">
 <head>
@@ -11,11 +12,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
 
-  <!-- ※ GitHub Pagesでも崩れにくいように ./ を付ける -->
-  <link rel="stylesheet" href="./css/style.css" />
+  <!-- ★ GitHub Pagesのキャッシュ対策：クエリを付けて強制更新 -->
+  <link rel="stylesheet" href="./css/style.css?v=20260107_01" />
 </head>
+
 <body>
   <div id="app"></div>
-  <script src="./js/quiz_logic.js"></script>
+
+  <!-- ★ GitHub Pagesのキャッシュ対策：JSも同様 -->
+  <script src="./js/quiz_logic.js?v=20260107_01"></script>
 </body>
 </html>
+EOF

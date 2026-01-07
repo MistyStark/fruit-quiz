@@ -1,132 +1,207 @@
-/* =========================
-   Base
-========================= */
+/* =========================================================
+   fruit-quiz UI base
+   010_start / 020_quiz / 030_hantei / 040_knowledge / 050_result も使える土台
+   ========================================================= */
 
-* {
-  box-sizing: border-box;
+:root{
+  --paper: #f3efe6;
+  --paper2:#f7f4ec;
+  --ink: #2b2b2b;
+  --muted: rgba(0,0,0,.25);
+
+  --card: rgba(255,255,255,.92);
+  --cardEdge: rgba(0,0,0,.08);
+
+  --shadow1: 0 8px 18px rgba(0,0,0,.12);
+  --shadow2: 0 18px 40px rgba(0,0,0,.12);
+
+  --radiusL: 22px;
+  --radiusM: 14px;
+
+  --ok1: #78cc38;
+  --ok2: #3aa114;
 }
 
-body {
+/* ===== reset-ish ===== */
+*{ box-sizing: border-box; }
+html, body{ height: 100%; }
+body{
   margin: 0;
-  font-family: "Noto Sans JP", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #f6f1e8;
-  color: #222;
+  color: var(--ink);
+  background: var(--paper);
+  font-family:
+    "Noto Sans JP",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Hiragino Kaku Gothic ProN",
+    "Hiragino Kaku Gothic Pro",
+    "Yu Gothic",
+    "Meiryo",
+    sans-serif;
 }
 
-/* =========================
-   Screen / Card
-========================= */
+/* ===== app layout ===== */
+#app{ min-height: 100%; }
 
-.screen {
+.screen{
   min-height: 100vh;
+  padding: 20px 16px calc(24px + env(safe-area-inset-bottom));
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
 
-.card {
-  width: 340px;
-  background: #fffdf8;
-  border-radius: 18px;
-  padding: 20px 18px 26px;
+/* 背景（紙 + ドット） */
+.paper-bg{
+  background:
+    radial-gradient(rgba(0,0,0,.035) 1px, transparent 1px) 0 0 / 18px 18px,
+    linear-gradient(180deg, #f8f4ea, #f2ecdf);
+}
+
+/* 010_start 背景（画像） */
+.bg-start{
+  background:
+    radial-gradient(rgba(0,0,0,.03) 1px, transparent 1px) 0 0 / 18px 18px,
+    linear-gradient(180deg, #fbf6ea, #f0e8d7);
+}
+.start-mock{
+  background-image: url("../images/010_start.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+/* 共通カード */
+.paper-card{
+  width: min(420px, 94vw);
+  background: var(--card);
+  border: 1px solid var(--cardEdge);
+  border-radius: var(--radiusL);
+  box-shadow: var(--shadow2);
+  padding: 22px 18px;
+}
+
+/* ===== START button ===== */
+.start-btn{
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  width: min(280px, 78vw);
+  padding: 14px 18px;
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 900;
+  letter-spacing: .08em;
+  background: linear-gradient(180deg, var(--ok1), var(--ok2));
   box-shadow:
-    0 12px 24px rgba(0,0,0,.12),
-    inset 0 1px 0 rgba(255,255,255,.9);
+    inset 0 2px 5px rgba(255,255,255,.6),
+    0 10px 18px rgba(0,0,0,.18);
+  text-shadow: 0 2px 4px rgba(0,0,0,.25);
+}
+.start-btn:active{
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 2px 6px rgba(0,0,0,.18),
+    0 8px 14px rgba(0,0,0,.16);
 }
 
-/* =========================
-   Quiz Title
-========================= */
+/* ===== QUIZ ===== */
+.quiz-wrap{
+  width: min(420px, 94vw);
+  background: var(--card);
+  border: 1px solid var(--cardEdge);
+  border-radius: var(--radiusL);
+  box-shadow: var(--shadow2);
+  padding: 20px 18px 18px;
+}
 
-.quiz-title-kanji {
+.quiz-title-kanji{
   text-align: center;
+
+  /* ★ 苺だけ明朝体 */
   font-family:
     "Yu Mincho",
     "Hiragino Mincho ProN",
     "Hiragino Mincho Pro",
     serif;
+
   font-weight: 500;
   font-size: 62px;
   letter-spacing: .06em;
-  margin: 8px 0 14px;
-  color: #222;
+  margin: 6px 0 10px;
 }
 
-.quiz-divider {
+.hr{
   height: 1px;
-  background: rgba(0,0,0,.12);
-  margin-bottom: 18px;
+  background: rgba(0,0,0,.16);
+  margin: 6px 0 16px;
 }
 
-/* =========================
-   Choices
-========================= */
-
-.choice-grid {
+.choice-grid{
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px 14px;
-  margin-bottom: 18px;
+  gap: 14px 14px;
+  margin: 0 4px 14px;
 }
 
-.choice-btn {
-  height: 46px;
+.choice-btn{
+  appearance: none;
   border-radius: 10px;
+  padding: 14px 10px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: var(--ink);
   border: 2px solid rgba(0,0,0,.18);
-  background: rgba(255,255,255,.9);
-  font-size: 18px;
-  font-weight: 500;
+  background: rgba(255,255,255,.85);
   box-shadow: 0 4px 8px rgba(0,0,0,.08);
-  cursor: pointer;
-  transition: all .15s ease;
 }
 
-.choice-btn:hover {
-  background: #ffffff;
-}
-
-.choice-btn.is-selected {
+.choice-btn.is-selected{
   background: linear-gradient(180deg, #e9f6df, #cfecc1);
   border: 3px solid #2f8f23;
   box-shadow:
     inset 0 2px 4px rgba(255,255,255,.8),
     0 6px 12px rgba(0,0,0,.18);
-  font-weight: 700;
+  font-weight: 900;
 }
 
-.choice-btn.is-locked {
-  cursor: default;
+.quiz-blank{
+  height: 46px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.65);
+  border: 1px solid rgba(0,0,0,.14);
+  margin: 8px 4px 16px;
 }
 
-/* =========================
-   OK Button
-========================= */
-
-.ok-area {
-  margin-top: 22px;
-}
-
-.ok-btn {
-  width: 100%;
-  height: 52px;
-  border-radius: 26px;
+.ok-btn{
+  appearance: none;
   border: none;
-  font-size: 20px;
-  font-weight: 700;
-  color: #fff;
-  background: linear-gradient(180deg, #9ad45c, #6fb92c);
-  box-shadow: 0 6px 0 #4e8f1d;
   cursor: pointer;
-  transition: all .15s ease;
+  width: 100%;
+  height: 62px;
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 900;
+  letter-spacing: .12em;
+  font-size: 22px;
+  background: linear-gradient(180deg, var(--ok1), var(--ok2));
+  box-shadow:
+    inset 0 2px 6px rgba(255,255,255,.55),
+    0 10px 18px rgba(0,0,0,.20);
+  text-shadow: 0 2px 4px rgba(0,0,0,.28);
 }
-
-.ok-btn:active {
-  transform: translateY(3px);
-  box-shadow: 0 3px 0 #4e8f1d;
+.ok-btn:disabled{
+  opacity: .42;
+  filter: grayscale(.2);
+  cursor: not-allowed;
 }
+.ok-btn:active{ transform: translateY(1px); }
 
-.ok-btn.is-disabled {
-  background: linear-gradient(180deg, #cfe6b8, #b8d59c);
-  box-shadow: none;
-  cursor: default;
+/* スマホ微調整 */
+@media (max-width: 390px){
+  .quiz-title-kanji{ font-size: 56px; }
+  .choice-btn{ font-size: 18px; padding: 13px 8px; }
 }
