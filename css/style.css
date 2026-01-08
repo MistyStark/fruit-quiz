@@ -25,6 +25,7 @@
 /* ===== reset-ish ===== */
 *{ box-sizing: border-box; }
 html, body{ height: 100%; }
+
 body{
   margin: 0;
   color: var(--ink);
@@ -40,17 +41,38 @@ body{
     "Yu Gothic",
     "Meiryo",
     sans-serif;
+
+  /* ★ 画面の“ちょいスクロール”を止める */
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: manipulation;
 }
 
 /* ===== app layout ===== */
 #app{ min-height: 100%; }
 
+/* ★ 1画面にピッタリ収める：padding込みで100dvh */
 .screen{
+  height: 100vh;
   min-height: 100vh;
   padding: 20px 16px calc(24px + env(safe-area-inset-bottom));
   display: flex;
   align-items: center;
   justify-content: center;
+
+  /* paddingを含めて高さ計算 */
+  box-sizing: border-box;
+
+  /* iOSのバウンスも抑える */
+  overflow: hidden;
+}
+
+/* 動的Viewport対応ブラウザではこっち優先 */
+@supports (height: 100dvh){
+  .screen{
+    height: 100dvh;
+    min-height: 100dvh;
+  }
 }
 
 /* 背景（紙 + ドット） */
@@ -60,17 +82,22 @@ body{
     linear-gradient(180deg, #f8f4ea, #f2ecdf);
 }
 
-/* 010_start 背景（画像） */
+/* 010_start 背景（下地） */
 .bg-start{
   background:
     radial-gradient(rgba(0,0,0,.03) 1px, transparent 1px) 0 0 / 18px 18px,
     linear-gradient(180deg, #fbf6ea, #f0e8d7);
 }
+
+/* 010_start 背景（画像）
+   ★ cover → contain にして「拡大ボケ」を抑える
+   ★ 画像 + ドット + 紙 を1つのbackgroundで定義してズレを防ぐ
+*/
 .start-mock{
-  background-image: url("../images/010_start.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  background:
+    url("../images/010_start.png") center / contain no-repeat,
+    radial-gradient(rgba(0,0,0,.03) 1px, transparent 1px) 0 0 / 18px 18px,
+    linear-gradient(180deg, #fbf6ea, #f0e8d7);
 }
 
 /* 共通カード */
