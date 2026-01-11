@@ -1,19 +1,20 @@
 /* =========================================================
    fruit-quiz UI base (FULL REPLACE)
-   010_start / 020_quiz / 030_hantei / 040_knowledge / 050_result
+   010_start / 020_quiz
+   - 1画面完結（スクロールNG）
+   - 16択 + OKボタンが必ず表示
    ========================================================= */
 
 :root{
   --paper: #f3efe6;
   --paper2:#f7f4ec;
   --ink: #2b2b2b;
-  --muted: rgba(0,0,0,.25);
 
-  --card: rgba(255,255,255,.92);
-  --cardEdge: rgba(0,0,0,.08);
+  --card: rgba(255,255,255,92);
+  --cardEdge: rgba(0,0,0,08);
 
-  --shadow1: 0 8px 18px rgba(0,0,0,.12);
-  --shadow2: 0 18px 40px rgba(0,0,0,.12);
+  --shadow1: 0 8px 18px rgba(0,0,0,12);
+  --shadow2: 0 18px 40px rgba(0,0,0,12);
 
   --ok1:#67c54e;
   --ok2:#2f9d3a;
@@ -21,7 +22,7 @@
   --radiusL: 22px;
   --radiusM: 16px;
 
-  /* スタート画面の「余白」用の安全値（端末差に強い） */
+  /* スタート画面の安全余白 */
   --startPadTop: clamp(18px, 4svh, 40px);
   --startPadSide: 16px;
   --startPadBottom: calc(18px + env(safe-area-inset-bottom));
@@ -29,7 +30,6 @@
 
 /* ===== reset-ish ===== */
 *{ box-sizing: border-box; }
-
 html, body{
   height: 100%;
   margin: 0;
@@ -38,7 +38,7 @@ html, body{
 body{
   color: var(--ink);
   background: var(--paper);
-  overflow: hidden; /* 1画面アプリ前提。スクロールは基本させない */
+  overflow: hidden; /* 1画面アプリ前提：スクロールさせない */
   font-family:
     "Noto Sans JP",
     -apple-system,
@@ -56,9 +56,7 @@ body{
 }
 
 /* ===== app layout ===== */
-#app{
-  min-height: 100svh;
-}
+#app{ min-height: 100svh; }
 
 /* 共通スクリーン（基本は中央寄せ） */
 .screen{
@@ -67,65 +65,6 @@ body{
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-/* =========================================================
-   START screen (ここが今回の主役)
-   目的:
-   ①上下の白余白をなくす（常に画面いっぱい）
-   ②タイトルとスタートボタンを絶対に被らせない
-   ========================================================= */
-
-#startScreen{
-  /* 画面を必ず満たす */
-  min-height: 100svh;
-
-  /* “縦キャンバス”にする */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  /* ここが肝: 上下に分配して被りを消す */
-  justify-content: space-between;
-
-  /* 端末差に強いパディング */
-  padding: var(--startPadTop) var(--startPadSide) var(--startPadBottom);
-
-  /* 背景は cover で上下白を出さない */
-  background-repeat: no-repeat;
-  background-position: center top;
-  background-size: cover;
-}
-
-/* スタート画面で .screen の中央寄せを上書き */
-#startScreen.screen{
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--startPadTop) var(--startPadSide) var(--startPadBottom);
-}
-
-/* 文字ブロック（HTML側で class が違っても効くように保険をかける） */
-#startScreen .start-title,
-#startScreen .title,
-#startScreen h1,
-#startScreen h2,
-#startScreen .question{
-  text-align: center;
-  margin: 0;
-  /* タイトルを少し上寄せにして、ボタンと距離を確保 */
-  padding-top: clamp(10px, 6svh, 60px);
-}
-
-/* タイトルとボタンの間の“伸びる空間”を作る保険
-   何か要素が増えても、最後のボタンが下に落ちる */
-#startScreen > :not(.start-btn):not(.btn):not(button){
-  /* 直接子要素が想定より少なくても崩れにくい */
-}
-
-/* スタートボタンは常に下側へ */
-#startScreen .start-btn{
-  margin-top: auto;
-  margin-bottom: 6px;
 }
 
 /* 背景（紙 + ドット） */
@@ -150,25 +89,71 @@ body{
 
 /* 旧モック画像（使う場合用） */
 .start-mock{
-  background-image: url("../images/010_start.png");
   background-repeat: no-repeat;
   background-position: center top;
   background-size: cover;
 }
 
-/* ===== quiz card ===== */
+/* =========================================================
+   START screen
+   - タイトルがHTMLに入ってても被りにくい保険付き
+   ========================================================= */
+
+#startScreen{
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--startPadTop) var(--startPadSide) var(--startPadBottom);
+}
+
+/* タイトルがもし存在したら（過去版との互換） */
+#startScreen .start-title,
+#startScreen .title,
+#startScreen h1,
+#startScreen h2,
+#startScreen .question{
+  text-align: center;
+  margin: 0;
+  padding-top: clamp(10px, 6svh, 60px);
+  color: #222;
+}
+
+/* スタートボタンは常に下側へ */
+#startScreen .start-btn{
+  margin-top: auto;
+  margin-bottom: 6px;
+}
+
+/* =========================================================
+   QUIZ screen (020_quiz)
+   - スクロール無しで 16択 + OK を必ず収める
+   ========================================================= */
+
+.quiz-wrap{ width: min(620px, 96vw); }
+
+/* カードは“画面内に必ず収まる器”にする */
 .paper-card{
   width: min(560px, 94vw);
   background: var(--card);
   border: 1px solid var(--cardEdge);
   border-radius: var(--radiusL);
   box-shadow: var(--shadow2);
-  padding: 22px 18px;
+  padding: 16px 14px;
+
+  /* ここが肝：カード自体を1画面に収める */
+  height: calc(100svh - 40px - env(safe-area-inset-bottom));
+  display: flex;
 }
 
-.quiz-wrap{ width: min(620px, 96vw); }
-
-.pad{ padding: 6px 4px; }
+.pad{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* 念のため */
+  padding: 6px 4px;
+}
 
 .quiz-title-kanji{
   font-family:
@@ -177,37 +162,58 @@ body{
     "HGS明朝E",
     "MS Mincho",
     serif;
-  font-size: 64px;
+  font-size: clamp(46px, 10vw, 64px);
   font-weight: 900;
   letter-spacing: .08em;
   text-align: center;
-  margin: 10px 0 14px;
+  margin: 8px 0 10px;
   color: #222;
 }
 
 .hr{
   height: 2px;
   background: linear-gradient(90deg, transparent, rgba(0,0,0,.15), transparent);
-  margin: 8px 0 16px;
+  margin: 6px 0 12px;
 }
 
+/* 選択肢：残り高さを全部使う（スクロール無し） */
 .choice-grid{
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+
+  /* 端末が小さいときに詰める */
+  gap: clamp(8px, 1.5vh, 12px);
+
+  /* OKボタン領域を確保しつつ、ここが伸び縮み */
+  flex: 1;
+  min-height: 0;
 }
+
+/* 余白ダミーは不要 */
+.quiz-blank{ display: none; }
 
 .choice-btn{
   appearance: none;
   border: 1px solid rgba(0,0,0,.12);
   background: rgba(255,255,255,.96);
   border-radius: var(--radiusM);
-  padding: 14px 10px;
-  font-size: 20px;
+  box-shadow: var(--shadow1);
+
+  /* スクロール無しで収めるため可変 */
+  padding: clamp(6px, 1.2vh, 12px) 10px;
+
+  /* 文字は“長いyomi”に合わせて縮む */
+  font-size: clamp(12px, 3.7vw, 18px);
   font-weight: 800;
+  line-height: 1.1;
+
+  /* 1行固定 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+
   color: #333;
   cursor: pointer;
-  box-shadow: var(--shadow1);
   transition: transform .06s ease, box-shadow .12s ease, background .12s ease;
 }
 
@@ -221,14 +227,15 @@ body{
   background: rgba(231,255,236,.96);
 }
 
-.quiz-blank{ height: 16px; }
-
+/* OKボタンは常に下。スクロールなしで余白確保 */
 .quiz-bottom{
   display: flex;
   justify-content: center;
-  margin-top: 12px;
+  margin-top: clamp(10px, 1.6vh, 14px);
+  padding-bottom: max(6px, env(safe-area-inset-bottom));
 }
 
+/* ===== buttons ===== */
 .btn{
   appearance: none;
   border: none;
@@ -243,44 +250,237 @@ body{
   width: min(280px, 78vw);
 }
 
-/* ===== START button ===== */
-.start-btn{
-  appearance: none;
-  border: none;
-  cursor: pointer;
-  width: min(280px, 78vw);
-  padding: 14px 18px;
-  border-radius: 999px;
-  color: #fff;
-  font-weight: 900;
-  letter-spacing: .08em;
-  background: linear-gradient(180deg, var(--ok1), var(--ok2));
-  box-shadow:
-    inset 0 2px 5px rgba(255,255,255,.6),
-    0 10px 18px rgba(0,0,0,.18);
-  text-shadow: 0 2px 4px rgba(0,0,0,.25);
-}
-
-.start-btn:active{ transform: translateY(1px); }
-
-/* ===== OK button ===== */
+.start-btn,
 .ok-btn{
   color: #fff;
   background: linear-gradient(180deg, var(--ok1), var(--ok2));
   box-shadow:
-    inset 0 2px 5px rgba(255,255,255,.6),
+    inset 0 2px 5px rgba(255,255,255,.06),
     0 10px 18px rgba(0,0,0,.18);
-  text-shadow: 0 2px 4px rgba(0,0,0,.28);
+  text-shadow: 0 2px 4px rgba(0,0,0,.25);
 }
+
 .ok-btn:disabled{
   opacity: .42;
   filter: grayscale(.2);
   cursor: not-allowed;
 }
+
+.start-btn:active,
 .ok-btn:active{ transform: translateY(1px); }
 
 /* スマホ微調整 */
 @media (max-width: 390px){
-  .quiz-title-kanji{ font-size: 56px; }
-  .choice-btn{ font-size: 18px; padding: 13px 8px; }
+  .btn-pill{ width: min(300px, 84vw); }
+}
+
+/* ===== 030 判定画面 ===== */
+.result-area{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 6px 12px;
+}
+
+.result-banner{
+  width: min(420px, 86vw);
+  border-radius: 10px;
+  padding: 18px 16px;
+  text-align: center;
+  font-weight: 900;
+  box-shadow: var(--shadow1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.result-banner-text{
+  font-size: clamp(22px, 6.2vw, 34px);
+  letter-spacing: .08em;
+}
+
+.result-emoji{ font-size: clamp(22px, 6vw, 34px); }
+
+/* 正解/不正解の色（モック寄せ） */
+.result-banner.is-correct{
+  background: #2f6bd9;
+  color: #fff;
+}
+
+.result-banner.is-wrong{
+  background: #f0c232;
+  color: #222;
+}
+
+.result-answer{
+  font-size: clamp(16px, 4.4vw, 20px);
+  color: #333;
+}
+
+.result-yomi{
+  font-weight: 900;
+  letter-spacing: .04em;
+}
+
+/* 下部ボタン（判定画面） */
+.result-actions{
+  margin-top: auto;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  padding-bottom: max(6px, env(safe-area-inset-bottom));
+}
+
+.sub-btn{
+  width: min(180px, 42vw);
+  background: #e9e9e9;
+  color: #333;
+  box-shadow: 0 10px 18px rgba(0,0,0,.12);
+}
+
+.next-btn{
+  width: min(180px, 42vw);
+  background: linear-gradient(180deg, var(--ok1), var(--ok2));
+  color: #fff;
+  box-shadow:
+    inset 0 2px 5px rgba(255,255,255,.06),
+    0 10px 18px rgba(0,0,0,.18);
+}
+
+/* ===== 050 結果画面 ===== */
+.result-card .pad{ gap: 10px; }
+
+.res-top{
+  text-align: center;
+  padding-top: 8px;
+}
+
+.res-title{
+  font-weight: 900;
+  font-size: clamp(18px, 4.8vw, 22px);
+  letter-spacing: .08em;
+}
+
+.res-score{
+  margin-top: 4px;
+  font-family:
+    "Yu Mincho",
+    "Hiragino Mincho ProN",
+    "HGS明朝E",
+    "MS Mincho",
+    serif;
+  font-weight: 900;
+  letter-spacing: .03em;
+}
+
+.res-score-main{
+  font-size: clamp(52px, 14vw, 72px);
+  color: #2a6b2e;
+}
+
+.res-score-sub{
+  font-size: clamp(22px, 6.5vw, 30px);
+  color: #222;
+}
+
+.res-msg{
+  text-align: center;
+  padding: 6px 0 4px;
+}
+
+.res-msg-1{
+  font-weight: 900;
+  font-size: clamp(18px, 5vw, 22px);
+}
+
+.res-msg-2{
+  margin-top: 3px;
+  font-weight: 700;
+  font-size: clamp(14px, 4.2vw, 16px);
+  color: rgba(0,0,0,.7);
+}
+
+.res-table{
+  margin-top: 6px;
+  border: 1px solid rgba(0,0,0,.12);
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(255,255,255,.75);
+}
+
+.res-head{
+  display: grid;
+  grid-template-columns: 60px 1fr 1fr 18px;
+  gap: 8px;
+  padding: 10px 10px;
+  background: rgba(0,0,0,.06);
+  font-weight: 900;
+  font-size: 14px;
+  color: rgba(0,0,0,.75);
+}
+
+.res-body{
+  display: grid;
+
+  /* 👇 ここがポイント */
+  max-height: 38vh;        /* 画面高さに対して可変 */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
+  /* スクロールしても角丸を保つ */
+  border-top: 1px solid rgba(0,0,0,.08);
+}
+
+.res-row{
+  display: grid;
+  grid-template-columns: 60px 1fr 1fr 18px;
+  gap: 8px;
+  align-items: center;
+  padding: 9px 10px;
+  border-top: 1px solid rgba(0,0,0,.08);
+  font-weight: 800;
+  font-size: clamp(14px, 4.2vw, 16px);
+}
+
+.res-row.is-ok{ background: rgba(160, 220, 120, .35); }
+.res-row.is-ng{ background: rgba(245, 190, 140, .35); }
+
+.res-q{
+  font-family:
+    "Yu Mincho",
+    "Hiragino Mincho ProN",
+    "HGS明朝E",
+    "MS Mincho",
+    serif;
+  font-weight: 900;
+  text-align: center;
+  font-size: 18px;
+}
+
+.res-your, .res-ans{
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: rgba(255,255,255,.8);
+  border: 1px solid rgba(0,0,0,.10);
+  text-align: center;
+
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.res-arrow{
+  text-align: center;
+  font-size: 22px;
+  opacity: .6;
+}
+
+.res-actions{
+  margin-top: auto;
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  padding-top: 12px;
+  padding-bottom: max(6px, env(safe-area-inset-bottom));
 }
