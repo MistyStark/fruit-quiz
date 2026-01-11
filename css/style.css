@@ -1,6 +1,6 @@
 /* =========================================================
-   fruit-quiz UI base
-   010_start / 020_quiz / 030_hantei / 040_knowledge / 050_result も使える土台
+   fruit-quiz UI base (FULL REPLACE)
+   010_start / 020_quiz / 030_hantei / 040_knowledge / 050_result
    ========================================================= */
 
 :root{
@@ -15,99 +15,232 @@
   --shadow1: 0 8px 18px rgba(0,0,0,.12);
   --shadow2: 0 18px 40px rgba(0,0,0,.12);
 
-  --radiusL: 22px;
-  --radiusM: 14px;
+  --ok1:#67c54e;
+  --ok2:#2f9d3a;
 
-  --ok1: #78cc38;
-  --ok2: #3aa114;
+  --radiusL: 22px;
+  --radiusM: 16px;
+
+  /* スタート画面の「余白」用の安全値（端末差に強い） */
+  --startPadTop: clamp(18px, 4svh, 40px);
+  --startPadSide: 16px;
+  --startPadBottom: calc(18px + env(safe-area-inset-bottom));
 }
 
 /* ===== reset-ish ===== */
 *{ box-sizing: border-box; }
-html, body{ height: 100%; }
+
+html, body{
+  height: 100%;
+  margin: 0;
+}
 
 body{
-  margin: 0;
   color: var(--ink);
   background: var(--paper);
+  overflow: hidden; /* 1画面アプリ前提。スクロールは基本させない */
   font-family:
     "Noto Sans JP",
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
     Roboto,
-    "Hiragino Kaku Gothic ProN",
-    "Hiragino Kaku Gothic Pro",
-    "Yu Gothic",
-    "Meiryo",
+    "Hiragino Sans",
+    "Noto Sans",
+    "Helvetica Neue",
+    Arial,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
     sans-serif;
-
-  /* ★ 画面の“ちょいスクロール”を止める */
-  overflow: hidden;
-  overscroll-behavior: none;
-  touch-action: manipulation;
 }
 
 /* ===== app layout ===== */
-#app{ min-height: 100%; }
+#app{
+  min-height: 100svh;
+}
 
-/* ★ 1画面にピッタリ収める：padding込みで100dvh */
+/* 共通スクリーン（基本は中央寄せ） */
 .screen{
-  height: 100vh;
-  min-height: 100vh;
+  min-height: 100svh;
   padding: 20px 16px calc(24px + env(safe-area-inset-bottom));
   display: flex;
   align-items: center;
   justify-content: center;
-
-  /* paddingを含めて高さ計算 */
-  box-sizing: border-box;
-
-  /* iOSのバウンスも抑える */
-  overflow: hidden;
 }
 
-/* 動的Viewport対応ブラウザではこっち優先 */
-@supports (height: 100dvh){
-  .screen{
-    height: 100dvh;
-    min-height: 100dvh;
-  }
+/* =========================================================
+   START screen (ここが今回の主役)
+   目的:
+   ①上下の白余白をなくす（常に画面いっぱい）
+   ②タイトルとスタートボタンを絶対に被らせない
+   ========================================================= */
+
+#startScreen{
+  /* 画面を必ず満たす */
+  min-height: 100svh;
+
+  /* “縦キャンバス”にする */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  /* ここが肝: 上下に分配して被りを消す */
+  justify-content: space-between;
+
+  /* 端末差に強いパディング */
+  padding: var(--startPadTop) var(--startPadSide) var(--startPadBottom);
+
+  /* 背景は cover で上下白を出さない */
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: cover;
+}
+
+/* スタート画面で .screen の中央寄せを上書き */
+#startScreen.screen{
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--startPadTop) var(--startPadSide) var(--startPadBottom);
+}
+
+/* 文字ブロック（HTML側で class が違っても効くように保険をかける） */
+#startScreen .start-title,
+#startScreen .title,
+#startScreen h1,
+#startScreen h2,
+#startScreen .question{
+  text-align: center;
+  margin: 0;
+  /* タイトルを少し上寄せにして、ボタンと距離を確保 */
+  padding-top: clamp(10px, 6svh, 60px);
+}
+
+/* タイトルとボタンの間の“伸びる空間”を作る保険
+   何か要素が増えても、最後のボタンが下に落ちる */
+#startScreen > :not(.start-btn):not(.btn):not(button){
+  /* 直接子要素が想定より少なくても崩れにくい */
+}
+
+/* スタートボタンは常に下側へ */
+#startScreen .start-btn{
+  margin-top: auto;
+  margin-bottom: 6px;
 }
 
 /* 背景（紙 + ドット） */
 .paper-bg{
   background:
-    radial-gradient(rgba(0,0,0,.035) 1px, transparent 1px) 0 0 / 18px 18px,
-    linear-gradient(180deg, #f8f4ea, #f2ecdf);
+    radial-gradient(rgba(0,0,0,.03) 1px, transparent 1px) 0 0 / 18px 18px,
+    linear-gradient(180deg, #fbf6ea, #f0e8d7);
 }
 
 /* 010_start 背景（下地） */
 .bg-start{
   background:
-    radial-gradient(rgba(0,0,0,.03) 1px, transparent 1px) 0 0 / 18px 18px,
-    linear-gradient(180deg, #fbf6ea, #f0e8d7);
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #f7f4ec 15%,
+      #f7f4ec 85%,
+      #ffffff 100%
+    ),
+    radial-gradient(rgba(0,0,0,.03) 1px, transparent 1px) 0 0 / 18px 18px;
 }
 
-/* 010_start 背景（画像）
-   ★ cover → contain にして「拡大ボケ」を抑える
-   ★ 画像 + ドット + 紙 を1つのbackgroundで定義してズレを防ぐ
-*/
+/* 旧モック画像（使う場合用） */
 .start-mock{
-  background:
-    url("../images/010_start.png") center / contain no-repeat,
-    radial-gradient(rgba(0,0,0,.03) 1px, transparent 1px) 0 0 / 18px 18px,
-    linear-gradient(180deg, #fbf6ea, #f0e8d7);
+  background-image: url("../images/010_start.png");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: cover;
 }
 
-/* 共通カード */
+/* ===== quiz card ===== */
 .paper-card{
-  width: min(420px, 94vw);
+  width: min(560px, 94vw);
   background: var(--card);
   border: 1px solid var(--cardEdge);
   border-radius: var(--radiusL);
   box-shadow: var(--shadow2);
   padding: 22px 18px;
+}
+
+.quiz-wrap{ width: min(620px, 96vw); }
+
+.pad{ padding: 6px 4px; }
+
+.quiz-title-kanji{
+  font-family:
+    "Yu Mincho",
+    "Hiragino Mincho ProN",
+    "HGS明朝E",
+    "MS Mincho",
+    serif;
+  font-size: 64px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-align: center;
+  margin: 10px 0 14px;
+  color: #222;
+}
+
+.hr{
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,.15), transparent);
+  margin: 8px 0 16px;
+}
+
+.choice-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.choice-btn{
+  appearance: none;
+  border: 1px solid rgba(0,0,0,.12);
+  background: rgba(255,255,255,.96);
+  border-radius: var(--radiusM);
+  padding: 14px 10px;
+  font-size: 20px;
+  font-weight: 800;
+  color: #333;
+  cursor: pointer;
+  box-shadow: var(--shadow1);
+  transition: transform .06s ease, box-shadow .12s ease, background .12s ease;
+}
+
+.choice-btn:active{ transform: translateY(1px); }
+
+.choice-btn.is-selected{
+  border-color: rgba(47,157,58,.45);
+  box-shadow:
+    0 10px 18px rgba(47,157,58,.12),
+    0 8px 18px rgba(0,0,0,.10);
+  background: rgba(231,255,236,.96);
+}
+
+.quiz-blank{ height: 16px; }
+
+.quiz-bottom{
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.btn{
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 900;
+  letter-spacing: .08em;
+}
+
+.btn-pill{
+  border-radius: 999px;
+  padding: 14px 18px;
+  width: min(280px, 78vw);
 }
 
 /* ===== START button ===== */
@@ -127,97 +260,16 @@ body{
     0 10px 18px rgba(0,0,0,.18);
   text-shadow: 0 2px 4px rgba(0,0,0,.25);
 }
-.start-btn:active{
-  transform: translateY(1px);
-  box-shadow:
-    inset 0 2px 6px rgba(0,0,0,.18),
-    0 8px 14px rgba(0,0,0,.16);
-}
 
-/* ===== QUIZ ===== */
-.quiz-wrap{
-  width: min(420px, 94vw);
-  background: var(--card);
-  border: 1px solid var(--cardEdge);
-  border-radius: var(--radiusL);
-  box-shadow: var(--shadow2);
-  padding: 20px 18px 18px;
-}
+.start-btn:active{ transform: translateY(1px); }
 
-.quiz-title-kanji{
-  text-align: center;
-
-  /* ★ 苺だけ明朝体 */
-  font-family:
-    "Yu Mincho",
-    "Hiragino Mincho ProN",
-    "Hiragino Mincho Pro",
-    serif;
-
-  font-weight: 500;
-  font-size: 62px;
-  letter-spacing: .06em;
-  margin: 6px 0 10px;
-}
-
-.hr{
-  height: 1px;
-  background: rgba(0,0,0,.16);
-  margin: 6px 0 16px;
-}
-
-.choice-grid{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px 14px;
-  margin: 0 4px 14px;
-}
-
-.choice-btn{
-  appearance: none;
-  border-radius: 10px;
-  padding: 14px 10px;
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: .06em;
-  color: var(--ink);
-  border: 2px solid rgba(0,0,0,.18);
-  background: rgba(255,255,255,.85);
-  box-shadow: 0 4px 8px rgba(0,0,0,.08);
-}
-
-.choice-btn.is-selected{
-  background: linear-gradient(180deg, #e9f6df, #cfecc1);
-  border: 3px solid #2f8f23;
-  box-shadow:
-    inset 0 2px 4px rgba(255,255,255,.8),
-    0 6px 12px rgba(0,0,0,.18);
-  font-weight: 900;
-}
-
-.quiz-blank{
-  height: 46px;
-  border-radius: 10px;
-  background: rgba(255,255,255,.65);
-  border: 1px solid rgba(0,0,0,.14);
-  margin: 8px 4px 16px;
-}
-
+/* ===== OK button ===== */
 .ok-btn{
-  appearance: none;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  height: 62px;
-  border-radius: 999px;
   color: #fff;
-  font-weight: 900;
-  letter-spacing: .12em;
-  font-size: 22px;
   background: linear-gradient(180deg, var(--ok1), var(--ok2));
   box-shadow:
-    inset 0 2px 6px rgba(255,255,255,.55),
-    0 10px 18px rgba(0,0,0,.20);
+    inset 0 2px 5px rgba(255,255,255,.6),
+    0 10px 18px rgba(0,0,0,.18);
   text-shadow: 0 2px 4px rgba(0,0,0,.28);
 }
 .ok-btn:disabled{
