@@ -335,10 +335,11 @@ body{
 
 .sub-btn{
   width: min(180px, 42vw);
-  background: #e9e9e9;
-  color: #333;
-  box-shadow: 0 10px 18px rgba(0,0,0,.12);
+  background: linear-gradient(180deg, var(--ok1), var(--ok2));
+  color: #fff;
+  box-shadow: 0 10px 18px rgba(0,0,0,.16);
 }
+.sub-btn:active{ transform: translateY(1px); }
 
 .next-btn{
   width: min(180px, 42vw);
@@ -483,4 +484,228 @@ body{
   justify-content: center;
   padding-top: 12px;
   padding-bottom: max(6px, env(safe-area-inset-bottom));
+}
+
+/* 「この果物って？」を緑ボタンにする */
+.memo-btn{
+  background: linear-gradient(180deg, var(--ok1), var(--ok2));
+  color: #fff;
+
+  box-shadow:
+    inset 0 2px 5px rgba(255,255,255,.06),
+    0 10px 18px rgba(0,0,0,.18);
+
+  text-shadow: 0 2px 4px rgba(0,0,0,.25);
+}
+
+/* ===== knowledge 040 レイアウト指定（上書き） ===== */
+
+/* 上の「この果物って？」は使わない前提なので、余白を整える */
+.memo-top{
+  text-align: center;
+  padding-top: 8px;
+}
+
+/* 琵琶：中央どーん */
+.memo-kanji{
+  text-align: center;
+  margin: 8px 0 4px;
+
+  font-family:
+    "Yu Mincho",
+    "Hiragino Mincho ProN",
+    "HGS明朝E",
+    "MS Mincho",
+    serif;
+  font-size: clamp(54px, 14vw, 74px);
+  font-weight: 900;
+  letter-spacing: .12em;
+  color: #222;
+}
+
+/* よみ：ラベル消して中央 */
+.memo-yomi{
+  text-align: center;
+  margin: 0 0 10px;
+
+  font-family:
+    "Yu Mincho",
+    "Hiragino Mincho ProN",
+    "HGS明朝E",
+    "MS Mincho",
+    serif;
+  font-size: clamp(20px, 6vw, 26px);
+  font-weight: 800;
+  letter-spacing: .10em;
+  color: rgba(0,0,0,.78);
+}
+
+/* 季節・産地：縦並び */
+.memo-meta{
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+  margin: 2px 2px 8px;
+}
+
+.meta-row{
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 10px;
+  align-items: baseline;
+
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.72);
+  border: 1px solid rgba(0,0,0,.10);
+  box-shadow: 0 10px 18px rgba(0,0,0,.08);
+}
+
+.meta-label{
+  font-weight: 900;
+  color: #2a6b2e;
+  letter-spacing: .06em;
+}
+
+.meta-value{
+  font-weight: 800;
+  color: #333;
+}
+
+/* つぎへ：画面下（カード下）に固定 */
+.memo-actions{
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+  padding-top: 10px;
+  padding-bottom: max(6px, env(safe-area-inset-bottom));
+}
+
+/* 判定画面：この果物って？ ボタンがデカくならないように幅を固定 */
+.memo-btn{
+  width: min(180px, 42vw); /* ←これが最重要 */
+  background: linear-gradient(180deg, var(--ok1), var(--ok2));
+  color: #fff;
+
+  box-shadow:
+    inset 0 2px 5px rgba(255,255,255,.06),
+    0 10px 18px rgba(0,0,0,.18);
+
+  text-shadow: 0 2px 4px rgba(0,0,0,.25);
+}
+
+/* =========================================================
+   040_knowledge (fruit info card)
+   ========================================================= */
+
+.knowledge-wrap{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.knowledge-head{
+  text-align: center;
+  padding-top: 6px;
+}
+
+.k-kanji{
+  font-family:
+    "Yu Mincho",
+    "Hiragino Mincho ProN",
+    "HGS明朝E",
+    "MS Mincho",
+    serif;
+  font-size: clamp(44px, 10vw, 66px);
+  font-weight: 900;
+  letter-spacing: .04em;
+  margin: 6px 0 6px;
+}
+
+.k-yomi{
+  font-family: "Noto Sans JP", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: clamp(18px, 4.6vw, 26px);
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+
+.knowledge-sep{
+  height: 1px;
+  background: rgba(0,0,0,.10);
+  margin: 8px 4px 10px;
+}
+
+.k-meta{
+  display: grid;
+  gap: 8px;
+  padding: 0 2px 8px;
+}
+
+.k-meta-row{
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.k-label{
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 34px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.10);
+  box-shadow: 0 8px 14px rgba(0,0,0,.10);
+  font-weight: 900;
+}
+
+.k-value{
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.10);
+  box-shadow: 0 8px 14px rgba(0,0,0,.10);
+  font-weight: 700;
+}
+
+.k-image-frame{
+  margin: 10px auto 10px;
+  width: min(420px, 86vw);
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,.10);
+  box-shadow: 0 12px 24px rgba(0,0,0,.12);
+  background: #fff;
+  aspect-ratio: 1 / 1;
+}
+
+.k-image-frame img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.k-text{
+  font-family: "Noto Sans JP", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+  margin: 6px 6px 0;
+  color: #2f2f2f;
+}
+
+.knowledge-body{
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding-bottom: 10px;
+}
+
+.knowledge-bottom{
+  padding: 12px 6px calc(14px + env(safe-area-inset-bottom));
 }

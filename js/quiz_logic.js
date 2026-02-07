@@ -11,15 +11,15 @@
   ];
 
   const state = {
-    screen: "start", // start | quiz | result
+    screen: "start", // start | quiz | knowledge | result
     quiz: {
-      order: [],        // 出題に使う index 配列（10問）
-      index: 0,         // 今何問目か
+      order: [],
+      index: 0,
       choices: [],
       selected: null,
-      phase: "select",  // select | result
+      phase: "select", // select | result
       isCorrect: false,
-      history: []       // {kanji, your, answer, correct}
+      history: [] // {kanji, your, answer, correct}
     }
   };
 
@@ -39,7 +39,7 @@
     return START_IMAGES[i];
   }
 
-  // ✅ 10問を重複なしで抽選
+  // 10問を重複なしで抽選
   function buildOrder10() {
     const indices = QUIZ_DATA.map((_, i) => i);
     return shuffle(indices).slice(0, Math.min(QUIZ_COUNT, indices.length));
@@ -85,7 +85,6 @@
     state.quiz.isCorrect = correct;
     state.quiz.phase = "result";
 
-    // ✅ 履歴に保存
     state.quiz.history.push({
       kanji: q.kanji,
       your,
@@ -97,14 +96,12 @@
   }
 
   function goNextFromJudge() {
-    // ✅ 10問終わったら結果画面へ
     const isLast = (state.quiz.index >= state.quiz.order.length - 1);
     if (isLast) {
       state.screen = "result";
       mount(render());
       return;
     }
-
     state.quiz.index += 1;
     prepareQuestion();
   }
@@ -113,13 +110,13 @@
     return state.quiz.history.filter(r => r.correct).length;
   }
 
-  // 今回は「この果物って？」は簡易（アラート）でOK
-  function showMemo() {
-    const q = currentQuestion();
-    const memo = q.memo?.text ? q.memo.text.replace(/\n/g, "\n") : "（説明がありません）";
-    const season = q.memo?.season ? `季節：${q.memo.season}` : "";
-    const area = q.memo?.area ? `産地：${q.memo.area}` : "";
-    alert([memo, season, area].filter(Boolean).join("\n"));
+  /* =========================
+     knowledge screen control
+     ========================= */
+
+  function openKnowledge() {
+    state.screen = "knowledge";
+    mount(render());
   }
 
   /* =========================
@@ -173,7 +170,7 @@
       </div>
     ` : `
       <div class="result-actions">
-        <button class="btn btn-pill sub-btn memo-btn" type="button">この果物って？</button>
+        <button class="btn btn-pill memo-btn" type="button">この果物って？</button>
         <button class="btn btn-pill next-btn" type="button">つぎへ</button>
       </div>
     `;
@@ -188,6 +185,62 @@
               <div class="hr"></div>
               ${judgeArea}
               ${bodyArea}
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  function escapeHtml(s) {
+    return String(s ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function renderKnowledge() {
+    const q = currentQuestion();
+    const memoText = q.memo?.text ?? "（説明がありません）";
+    const season = q.memo?.season ?? "";
+    const area = q.memo?.area ?? "";
+    const image = q.memo?.image ?? "";
+
+    const meta = `
+      <div class="memo-meta">
+        ${season ? `<div class="meta-row"><span class="meta-label">季節</span><span class="meta-value">${escapeHtml(season)}</span></div>` : ""}
+        ${area ? `<div class="meta-row"><span class="meta-label">産地</span><span class="meta-value">${escapeHtml(area)}</span></div>` : ""}
+      </div>
+    `;
+
+    const imgArea = image ? `
+      <div class="memo-image-wrap">
+        <img class="memo-image" src="${escapeHtml(image)}" alt="${escapeHtml(q.kanji)} の写真">
+      </div>
+    ` : "";
+
+    return `
+      <section class="screen paper-bg" id="knowledgeScreen">
+        <div class="quiz-wrap">
+          <div class="paper-card knowledge-card">
+            <div class="pad">
+              <div class="memo-top">
+                <div class="memo-kanji">${escapeHtml(q.kanji)}</div>
+                <div class="memo-yomi">${escapeHtml(q.yomi)}</div>
+              </div>
+
+              ${meta}
+              ${imgArea}
+
+              <div class="memo-text" aria-label="豆知識">
+                ${escapeHtml(memoText).replaceAll("\n", "<br>")}
+              </div>
+
+              <div class="memo-actions">
+                <button class="btn btn-pill next-btn next-from-knowledge" type="button">つぎへ</button>
+              </div>
             </div>
           </div>
         </div>
@@ -247,6 +300,7 @@
 
   function render() {
     if (state.screen === "start") return renderStart();
+    if (state.screen === "knowledge") return renderKnowledge();
     if (state.screen === "result") return renderResult();
     return renderQuiz();
   }
@@ -278,6 +332,16 @@
       return;
     }
 
+    if (state.screen === "knowledge") {
+      const next = document.querySelector(".next-from-knowledge");
+      if (next) next.addEventListener("click", () => {
+        // knowledgeでは「つぎへ」しか無い：そのまま次の問題へ（最後なら結果へ）
+        state.screen = "quiz";
+        goNextFromJudge();
+      });
+      return;
+    }
+
     // quiz
     const isJudge = state.quiz.phase === "result";
 
@@ -301,7 +365,7 @@
     // judge
     const memoBtn = document.querySelector(".memo-btn");
     const nextBtn = document.querySelector(".next-btn");
-    if (memoBtn) memoBtn.addEventListener("click", showMemo);
+    if (memoBtn) memoBtn.addEventListener("click", openKnowledge);
     if (nextBtn) nextBtn.addEventListener("click", goNextFromJudge);
   }
 
