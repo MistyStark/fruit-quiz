@@ -160,9 +160,9 @@
     const bodyArea = !isJudge ? `
       <div class="choice-grid" role="list">
         ${state.quiz.choices.map((choice, idx) => {
-          const isSelected = state.quiz.selected === idx ? "is-selected" : "";
-          return `<button class="choice-btn ${isSelected}" data-index="${idx}" type="button">${choice}</button>`;
-        }).join("")}
+      const isSelected = state.quiz.selected === idx ? "is-selected" : "";
+      return `<button class="choice-btn ${isSelected}" data-index="${idx}" type="button">${choice}</button>`;
+    }).join("")}
       </div>
 
       <div class="quiz-bottom">
@@ -216,8 +216,8 @@
     `;
 
     const imgArea = image ? `
-      <div class="memo-image-wrap">
-        <img class="memo-image" src="${escapeHtml(image)}" alt="${escapeHtml(q.kanji)} の写真">
+      <div class="k-image-frame">
+        <img src="${escapeHtml(image)}" alt="${escapeHtml(q.kanji)} の写真">
       </div>
     ` : "";
 

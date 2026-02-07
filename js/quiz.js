@@ -6,7 +6,7 @@ const QUIZ_DATA = [
       text: "赤くて香りのよい果物です。\n表面のつぶつぶは実で、春に旬をむかえます。",
       season: "春",
       area: "栃木県・福岡県",
-      image: "images/strawberry.jpg"
+      image: "images/fruit/fruit_strawberry_1024.png"
     }
   },
   {
@@ -16,7 +16,7 @@ const QUIZ_DATA = [
       text: "冬の定番の柑橘です。\n皮がむきやすく、こたつのお供として親しまれます。",
       season: "冬",
       area: "愛媛県・和歌山県",
-      image: "images/mikan.jpg"
+      image: "images/fruit/fruit_mikan_1024.png"
     }
   },
   {
@@ -26,7 +26,7 @@ const QUIZ_DATA = [
       text: "シャキッとした食感が特徴です。\n生食のほか、アップルパイなどにも使われます。",
       season: "秋〜冬",
       area: "青森県",
-      image: "images/apple.jpg"
+      image: "images/fruit/fruit_apple_1024.png"
     }
   },
   {
@@ -36,7 +36,7 @@ const QUIZ_DATA = [
       text: "房になって実がなる果物です。\n品種が多く、ワインの原料にもなります。",
       season: "秋",
       area: "山梨県・長野県",
-      image: "images/grape.jpg"
+      image: "images/fruit/fruit_grape_1024.png"
     }
   },
   {
@@ -46,7 +46,7 @@ const QUIZ_DATA = [
       text: "夏を代表する大きな果物です。\n水分が多く、暑い日に体を冷やしてくれます。",
       season: "夏",
       area: "熊本県・千葉県",
-      image: "images/watermelon.jpg"
+      image: "images/fruit/fruit_watermelon_1024.png"
     }
   },
   {
@@ -56,7 +56,7 @@ const QUIZ_DATA = [
       text: "やわらかい果肉と甘い香りが特徴です。\n夏に旬をむかえ、品種も豊富です。",
       season: "夏",
       area: "山梨県・福島県",
-      image: "images/peach.jpg"
+      image: "images/fruit/fruit_peach_1024.png"
     }
   },
   {
@@ -66,7 +66,7 @@ const QUIZ_DATA = [
       text: "秋の代表的な果物です。\n甘い「あま柿」と、渋みのある「渋柿」があります。",
       season: "秋",
       area: "奈良県・和歌山県",
-      image: "images/persimmon.jpg"
+      image: "images/fruit/fruit_persimmon_1024.png"
     }
   },
   {
@@ -76,7 +76,7 @@ const QUIZ_DATA = [
       text: "シャリっとした食感とみずみずしさが特徴です。\n日本の梨はさっぱりした甘さが人気です。",
       season: "秋",
       area: "千葉県・鳥取県",
-      image: "images/pear.jpg"
+      image: "images/fruit/fruit_pear_1024.png"
     }
   },
   {
@@ -86,7 +86,7 @@ const QUIZ_DATA = [
       text: "すっぱい香りの強い柑橘です。\n飲み物やお菓子、料理にも広く使われます。",
       season: "冬",
       area: "広島県",
-      image: "images/lemon.jpg"
+      image: "images/fruit/fruit_lemon_1024.png"
     }
   },
   {
@@ -96,7 +96,7 @@ const QUIZ_DATA = [
       text: "一年中出回る食べやすい果物です。\nエネルギーになりやすく、朝食にも人気です。",
       season: "一年中",
       area: "フィリピン",
-      image: "images/banana.jpg"
+      image: "images/fruit/fruit_banana_1024.png"
     }
   },
 
@@ -107,7 +107,7 @@ const QUIZ_DATA = [
       text: "小さくてオレンジ色の果物です。\nジャムやドライフルーツにもよく使われます。",
       season: "初夏",
       area: "長野県",
-      image: "images/apricot.jpg"
+      image: "images/fruit/fruit_apricot_1024.png"
     }
   },
   {
@@ -117,7 +117,7 @@ const QUIZ_DATA = [
       text: "赤くて小さい果物です。\n初夏に旬をむかえ、山形県が有名です。",
       season: "初夏",
       area: "山形県",
-      image: "images/cherry.jpg"
+      image: "images/fruit/fruit_cherry_1024.png"
     }
   },
   {
@@ -127,7 +127,7 @@ const QUIZ_DATA = [
       text: "中につぶつぶがある果物です。\n皮ごと食べることもあり、やさしい甘さです。",
       season: "秋",
       area: "愛知県",
-      image: "images/fig.jpg"
+      image: "images/fruit/fruit_fig_1024.png"
     }
   },
   {
@@ -137,7 +137,7 @@ const QUIZ_DATA = [
       text: "粒がたくさん詰まった果物です。\nジュースやシロップにも使われます。",
       season: "秋",
       area: "和歌山県",
-      image: "images/pomegranate.jpg"
+      image: "images/fruit/fruit_pomegranate_1024.png"
     }
   },
   {
@@ -147,7 +147,7 @@ const QUIZ_DATA = [
       text: "黒むらさき色の小さな果物です。\n甘ずっぱく、初夏に実ります。",
       season: "初夏",
       area: "各地",
-      image: "images/mulberry.jpg"
+      image: "images/fruit/fruit_mulberry_1024.png"
     }
   },
   {
@@ -157,7 +157,7 @@ const QUIZ_DATA = [
       text: "やさしい甘さの果物です。\n初夏に出回り、果肉はやわらかめです。",
       season: "初夏",
       area: "長崎県・千葉県",
-      image: "images/loquat.jpg"
+      image: "images/fruit/fruit_loquat_1024.png"
     }
   },
   {
@@ -167,7 +167,7 @@ const QUIZ_DATA = [
       text: "強い酸味と香りが特徴です。\n梅干しや梅酒など、加工して親しまれます。",
       season: "初夏",
       area: "和歌山県",
-      image: "images/plum.jpg"
+      image: "images/fruit/fruit_plum_1024.png"
     }
   },
   {
@@ -177,7 +177,7 @@ const QUIZ_DATA = [
       text: "さっぱりした甘ずっぱさの果物です。\n英語ではプラムと呼ばれます。",
       season: "夏",
       area: "山梨県",
-      image: "images/sumomo.jpg"
+      image: "images/fruit/fruit_sumomo_1024.png"
     }
   },
   {
@@ -187,7 +187,7 @@ const QUIZ_DATA = [
       text: "甘い香りが強い果物です。\n網目のある品種は、香りの良さで人気です。",
       season: "夏",
       area: "北海道・茨城県",
-      image: "images/melon.jpg"
+      image: "images/fruit/fruit_melon_1024.png"
     }
   },
   {
@@ -197,7 +197,7 @@ const QUIZ_DATA = [
       text: "外側がとげとげした南国の果物です。\n缶詰でも親しまれ、甘い香りが特徴です。",
       season: "一年中",
       area: "沖縄県・フィリピン",
-      image: "images/pineapple.jpg"
+      image: "images/fruit/fruit_pineapple_1024.png"
     }
   },
 
@@ -208,7 +208,7 @@ const QUIZ_DATA = [
       text: "とろっとした甘さが魅力の果物です。\n国産は宮崎県などが有名で、香りも豊かです。",
       season: "夏",
       area: "宮崎県・沖縄県",
-      image: "images/mango.jpg"
+      image: "images/fruit/fruit_mango_1024.png"
     }
   },
   {
@@ -218,7 +218,7 @@ const QUIZ_DATA = [
       text: "中が緑色で種が黒い果物です。\nビタミンCが多いことで知られます。",
       season: "秋〜冬",
       area: "愛媛県・ニュージーランド",
-      image: "images/kiwi.jpg"
+      image: "images/fruit/fruit_kiwi_1024.png"
     }
   },
   {
@@ -228,7 +228,7 @@ const QUIZ_DATA = [
       text: "香りを楽しむ柑橘です。\n料理の風味づけや、冬至のゆず湯でも有名です。",
       season: "冬",
       area: "高知県",
-      image: "images/yuzu.jpg"
+      image: "images/fruit/fruit_yuzu_1024.png"
     }
   },
   {
@@ -238,7 +238,7 @@ const QUIZ_DATA = [
       text: "皮がむきやすい甘い柑橘です。\n冬に旬をむかえ、さっぱりした甘さが特徴です。",
       season: "冬",
       area: "愛媛県・熊本県",
-      image: "images/ponkan.jpg"
+      image: "images/fruit/fruit_ponkan_1024.png"
     }
   },
   {
@@ -248,7 +248,7 @@ const QUIZ_DATA = [
       text: "とろける食感が特徴の果物です。\n熟すと香りが強くなり、食べごろがわかりやすいです。",
       season: "秋",
       area: "山形県",
-      image: "images/you_nashi.jpg"
+      image: "images/fruit/fruit_you_nashi_1024.png"
     }
   },
   {
@@ -258,7 +258,7 @@ const QUIZ_DATA = [
       text: "小さな青い果物です。\nヨーグルトやお菓子に合い、目に良いイメージで有名です。",
       season: "夏",
       area: "長野県",
-      image: "images/blueberry.jpg"
+      image: "images/fruit/fruit_blueberry_1024.png"
     }
   },
   {
@@ -268,7 +268,7 @@ const QUIZ_DATA = [
       text: "大きな柑橘で、少し苦みがあります。\n果汁が多く、朝のジュースにもよく使われます。",
       season: "冬〜春",
       area: "アメリカ・南アフリカ",
-      image: "images/grapefruit.jpg"
+      image: "images/fruit/fruit_grapefruit_1024.png"
     }
   },
   {
@@ -278,7 +278,7 @@ const QUIZ_DATA = [
       text: "お正月飾りにも使われる柑橘です。\n「代々」につながる縁起物として親しまれます。",
       season: "冬",
       area: "和歌山県",
-      image: "images/daidai.jpg"
+      image: "images/fruit/fruit_daidai_1024.png"
     }
   },
   {
@@ -288,7 +288,7 @@ const QUIZ_DATA = [
       text: "みかん系の香りのよい柑橘です。\n果汁が多く、甘みと酸味のバランスが良いです。",
       season: "春",
       area: "愛媛県",
-      image: "images/kiyomi.jpg"
+      image: "images/fruit/fruit_kiyomi_1024.png"
     }
   },
   {
@@ -298,7 +298,7 @@ const QUIZ_DATA = [
       text: "形がよく大きめの柿として知られます。\n歯ごたえがあり、甘みがしっかりしています。",
       season: "秋",
       area: "静岡県",
-      image: "images/jirogaki.jpg"
+      image: "images/fruit/fruit_jirogaki_1024.png"
     }
   }
 ];
